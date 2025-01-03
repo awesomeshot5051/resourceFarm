@@ -1,8 +1,3 @@
-/gamerule doWeatherCycle false
-/time set day
-/recipe give Dev resource_farms:coal_farm
-/recipe give Dev resource_farms:copper_farm
-/recipe take Dev resource_farms:copper_farm
 /recipe take Dev resource_farms:dcopper_farm
 /recipe give Dev minecraft:blast_furnace
 /ride Dev mount Dev
@@ -48,3 +43,8 @@
 /tick rate 20
 /recipe give Dev resource_farms:andesite_farm
 /give Dev minecraft:andesite
+/place structure minecraft:village_desert
+/spreadplayers ~ ~ 1000 10000 under 100 false Dev
+/place structure minecraft:desert_pyramid -5170 80 4960
+/give Dev resource_farms:speed_upgrade
+/tick rate 100

@@ -1,42 +1,31 @@
 package com.awesomeshot5051.resourceFarm.blocks;
 
-import com.awesomeshot5051.resourceFarm.blocks.tileentity.InventoryViewerTileentity;
-import com.awesomeshot5051.resourceFarm.datacomponents.VillagerBlockEntityData;
-import com.awesomeshot5051.resourceFarm.entity.EasyVillagerEntity;
-import com.awesomeshot5051.resourceFarm.gui.InventoryViewerContainer;
-import com.awesomeshot5051.resourceFarm.items.render.InventoryViewerItemRenderer;
-import de.maxhenkel.corelib.block.IItemBlock;
-import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.client.CustomRendererBlockItem;
-import de.maxhenkel.corelib.client.ItemRenderer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
+import com.awesomeshot5051.resourceFarm.blocks.tileentity.*;
+import com.awesomeshot5051.resourceFarm.datacomponents.*;
+import com.awesomeshot5051.resourceFarm.entity.*;
+import com.awesomeshot5051.resourceFarm.gui.*;
+import com.awesomeshot5051.resourceFarm.items.render.*;
+import de.maxhenkel.corelib.block.*;
+import de.maxhenkel.corelib.blockentity.*;
+import de.maxhenkel.corelib.client.*;
+import net.minecraft.core.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.server.level.*;
 import net.minecraft.world.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.entity.player.*;
+import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.material.*;
+import net.minecraft.world.phys.*;
+import net.neoforged.api.distmarker.*;
+import org.jetbrains.annotations.*;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.*;
 
 public class InventoryViewerBlock extends BlockBase implements EntityBlock, IItemBlock {
 
@@ -74,7 +63,7 @@ public class InventoryViewerBlock extends BlockBase implements EntityBlock, IIte
             return super.useItemOn(heldItem, state, worldIn, pos, player, handIn, hit);
         }
 
-        // Only open the inventory if the player is a server player and the inventory viewer has a villager
+        // Only open the outputInventory if the player is a server player and the outputInventory viewer has a villager
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new MenuProvider() {
                 @Override

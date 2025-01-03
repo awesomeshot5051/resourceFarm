@@ -83,6 +83,7 @@ public class ModCreativeTabs {
                 output.accept(new ItemStack(ModBlocks.SNOW_FARM.get()));
                 output.accept(new ItemStack(ModBlocks.TUFF_FARM.get()));
 
+                output.accept(new ItemStack(ModItems.XP_UPGRADE.get()));
             })
             .title(Component.translatable("itemGroup.resource_farms"))
             .build());

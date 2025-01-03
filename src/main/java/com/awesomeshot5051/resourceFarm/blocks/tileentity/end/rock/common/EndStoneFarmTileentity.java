@@ -3,6 +3,8 @@ package com.awesomeshot5051.resourceFarm.blocks.tileentity.end.rock.common;
 import com.awesomeshot5051.resourceFarm.*;
 import com.awesomeshot5051.resourceFarm.blocks.*;
 import com.awesomeshot5051.resourceFarm.blocks.tileentity.*;
+import com.awesomeshot5051.resourceFarm.datacomponents.*;
+import com.awesomeshot5051.resourceFarm.gui.*;
 import de.maxhenkel.corelib.blockentity.*;
 import de.maxhenkel.corelib.inventory.*;
 import net.minecraft.core.*;
@@ -17,18 +19,20 @@ import java.util.*;
 
 public class EndStoneFarmTileentity extends VillagerTileentity implements ITickableBlockEntity {
 
+    private final MultiItemStackHandler itemHandler;
     public ItemStack pickType;
-    protected NonNullList<ItemStack> inventory;
+    protected NonNullList<ItemStack> outputInventory;
+    protected NonNullList<ItemStack> upgradeInventory;
     protected long timer;
-    protected ItemStackHandler itemHandler;
+    protected ItemStackHandler outputHandler;
     protected long breakStage;
-    protected OutputItemHandler outputItemHandler;
 
     public EndStoneFarmTileentity(BlockPos pos, BlockState state) {
         super(ModTileEntities.ESTONE_FARM.get(), ModBlocks.ESTONE_FARM.get().defaultBlockState(), pos, state);
-        inventory = NonNullList.withSize(4, ItemStack.EMPTY);
-        itemHandler = new ItemStackHandler(inventory);
-        outputItemHandler = new OutputItemHandler(inventory);
+        outputInventory = NonNullList.withSize(4, ItemStack.EMPTY);
+        upgradeInventory = NonNullList.withSize(4, ItemStack.EMPTY);
+        outputHandler = new ItemStackHandler(outputInventory);
+        itemHandler = new MultiItemStackHandler(upgradeInventory, outputInventory, UpgradeSlot::isValid);
         pickType = new ItemStack(Items.STONE_PICKAXE);
     }
 
@@ -70,8 +74,8 @@ public class EndStoneFarmTileentity extends VillagerTileentity implements ITicka
         timer++;
         if (timer >= getEndStoneBreakTime(this)) {
             for (ItemStack drop : getDrops()) {
-                for (int i = 0; i < itemHandler.getSlots(); i++) {
-                    drop = itemHandler.insertItem(i, drop, false);
+                for (int i = 0; i < outputHandler.getSlots(); i++) {
+                    drop = outputHandler.insertItem(i, drop, false);
                     if (drop.isEmpty()) {
                         break;
                     }
@@ -84,50 +88,69 @@ public class EndStoneFarmTileentity extends VillagerTileentity implements ITicka
     }
 
     private List<ItemStack> getDrops() {
+        List<ItemStack> drops = new ArrayList<>();
         if (!(level instanceof ServerLevel serverWorld)) {
             return Collections.emptyList();
         }
-        List<ItemStack> drops = new ArrayList<>();
+        if (this.hasUpgrades()) {
+            if (this.getUpgrade().equalsIgnoreCase("xp_upgrade")) {
+                drops.add(Items.EXPERIENCE_BOTTLE.getDefaultInstance());
+            }
+        }
+
         drops.add(new ItemStack(Items.END_STONE)); // Change this as needed for custom loot
         return drops;
     }
 
     public Container getOutputInventory() {
-        return new ItemListInventory(inventory, this::setChanged);
+        return new ItemListInventory(outputInventory, this::setChanged);
+    }
+
+    public Container getUpgradeInventory() {
+        return new ItemListInventory(upgradeInventory, this::setChanged);
     }
 
     @Override
     protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-
-        ContainerHelper.saveAllItems(compound, inventory, false, provider);
-// Save the pickType as an NBT tag
-        if (pickType != null) {
-            CompoundTag pickTypeTag = new CompoundTag();
-            pickTypeTag.putString("id", pickType.getItem().builtInRegistryHolder().key().location().toString()); // Save the item ID
-            pickTypeTag.putInt("count", pickType.getCount()); // Save the count
-            compound.put("PickType", pickTypeTag); // Add the tag to the main compound
-        }
-        compound.putLong("Timer", timer);
         super.saveAdditional(compound, provider);
+// Save the pickType as an NBT tag
+//        if (pickType != null) {
+//            CompoundTag pickTypeTag = new CompoundTag();
+//            pickTypeTag.putString("id", pickType.getItem().builtInRegistryHolder().key().location().toString()); // Save the item ID
+//            pickTypeTag.putInt("count", pickType.getCount()); // Save the count
+//            compound.put("PickType", pickTypeTag); // Add the tag to the main compound
+//        }
+        compound.put("UpgradeInventory", ContainerHelper.saveAllItems(compound, upgradeInventory, true, provider));
+        compound.put("OutputInventory", ContainerHelper.saveAllItems(compound, outputInventory, true, provider));
+        compound.putLong("Timer", timer);
+
     }
 
     @Override
     protected void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        ContainerHelper.loadAllItems(compound, inventory, provider);
-        if (compound.contains("PickType")) {
-            SyncableTileentity.loadPickType(compound, provider).ifPresent(stack -> this.pickType = stack);
-            Main.LOGGER.info("{} uses {}", this.getType(), pickType.getItem());
-        }
-        if (pickType == null) {
-// If no pickType is saved, set a default one (e.g., Stone Pickaxe)
-            pickType = new ItemStack(Items.STONE_PICKAXE);
-        }
 
+//        if (compound.contains("PickType")) {
+//            SyncableTileentity.loadPickType(compound, provider).ifPresent(stack -> this.pickType = stack);
+//        }
+//        if (pickType == null) {
+//// If no pickType is saved, set a default one (e.g., Stone Pickaxe)
+//            pickType = new ItemStack(Items.STONE_PICKAXE);
+//        }
+        VillagerData.convertInventory(compound.getCompound("UpgradeInventory"), upgradeInventory, provider);
+        VillagerData.convertInventory(compound.getCompound("OutputInventory"), outputInventory, provider);
         timer = compound.getLong("Timer");
         super.loadAdditional(compound, provider);
     }
 
+    public boolean hasUpgrades() {
+        return !getUpgradeInventory().isEmpty();
+    }
+
+    public String getUpgrade() {
+        return getUpgradeInventory().getItem(0).toString();
+    }
+
     public IItemHandler getItemHandler() {
-        return outputItemHandler;
+        return itemHandler;
     }
 }

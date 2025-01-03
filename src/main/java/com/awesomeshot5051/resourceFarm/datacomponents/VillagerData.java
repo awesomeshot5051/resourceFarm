@@ -1,21 +1,23 @@
 package com.awesomeshot5051.resourceFarm.datacomponents;
 
-import com.awesomeshot5051.resourceFarm.entity.EasyVillagerEntity;
-import com.awesomeshot5051.resourceFarm.items.ModItems;
-import com.mojang.serialization.Codec;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import com.awesomeshot5051.resourceFarm.entity.*;
+import com.awesomeshot5051.resourceFarm.items.*;
+import com.awesomeshot5051.resourceFarm.items.upgrade.*;
+import com.mojang.serialization.*;
+import net.minecraft.core.*;
+import net.minecraft.core.component.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
+import net.minecraft.network.chat.*;
+import net.minecraft.network.codec.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.npc.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.*;
 
-import javax.annotation.Nullable;
-import java.lang.ref.WeakReference;
-import java.util.Objects;
+import javax.annotation.*;
+import java.lang.ref.*;
+import java.util.*;
 
 public class VillagerData {
 
@@ -31,9 +33,8 @@ public class VillagerData {
             buf.writeNbt(villager.nbt);
         }
     };
-
-    private WeakReference<EasyVillagerEntity> villager = new WeakReference<>(null);
     private final CompoundTag nbt;
+    private WeakReference<EasyVillagerEntity> villager = new WeakReference<>(null);
 
     private VillagerData(CompoundTag nbt) {
         this.nbt = nbt;
@@ -66,6 +67,62 @@ public class VillagerData {
         return villagerData;
     }
 
+    public static EasyVillagerEntity createEasyVillager(ItemStack stack, Level level) {
+        VillagerData villagerData = getOrCreate(stack);
+        return villagerData.createEasyVillager(level, stack);
+    }
+
+    //    public static void applyToItem(ItemStack stack, Villager villager) {
+//        if (stack.isEmpty()) {
+//            return;
+//        }
+//        stack.set(ModItems.VILLAGER_DATA_COMPONENT, VillagerData.of(villager));
+//        if (villager.hasCustomName()) {
+//            stack.set(DataComponents.CUSTOM_NAME, villager.getCustomName());
+//        }
+//    }
+//
+//    public static EasyVillagerEntity getCacheVillager(ItemStack stack, Level level) {
+//        return getOrCreate(stack).getCacheVillager(level);
+//    }
+//
+    public static void convertInventory(CompoundTag tag, NonNullList<ItemStack> stacks, HolderLookup.Provider provider) {
+        ListTag listtag = tag.getList("Items", Tag.TAG_COMPOUND);
+
+        for (int i = 0; i < listtag.size(); i++) {
+            CompoundTag itemTag = listtag.getCompound(i);
+            int pos = itemTag.getByte("Slot") & 255;
+            if (pos < stacks.size()) {
+                ItemStack convert = convert(provider, itemTag);
+                stacks.set(pos, convert);
+            }
+        }
+    }
+
+    public static ItemStack convert(HolderLookup.Provider provider, CompoundTag itemCompound) {
+        ItemStack stack = ItemStack.parseOptional(provider, itemCompound);
+        if (stack.isEmpty()) {
+            return stack;
+        }
+        if (!(stack.getItem() instanceof XPUpgradeCard)) {
+            return stack;
+        }
+        if (stack.has(ModItems.VILLAGER_DATA_COMPONENT)) {
+            return stack;
+        }
+        if (!itemCompound.contains("tag", Tag.TAG_COMPOUND)) {
+            return stack;
+        }
+        CompoundTag tag = itemCompound.getCompound("tag");
+        if (!tag.contains("villager", Tag.TAG_COMPOUND)) {
+            return stack;
+        }
+        CompoundTag villagerTag = tag.getCompound("villager");
+        VillagerData villagerData = VillagerData.of(villagerTag);
+        stack.set(ModItems.VILLAGER_DATA_COMPONENT, villagerData);
+        return stack;
+    }
+
     public EasyVillagerEntity getCacheVillager(Level level) {
         EasyVillagerEntity easyVillager = villager.get();
         if (easyVillager == null) {
@@ -89,62 +146,6 @@ public class VillagerData {
         v.yHeadRotO = 0F;
         return v;
     }
-
-    public static EasyVillagerEntity createEasyVillager(ItemStack stack, Level level) {
-        VillagerData villagerData = getOrCreate(stack);
-        return villagerData.createEasyVillager(level, stack);
-    }
-
-//    public static void applyToItem(ItemStack stack, Villager villager) {
-//        if (stack.isEmpty()) {
-//            return;
-//        }
-//        stack.set(ModItems.VILLAGER_DATA_COMPONENT, VillagerData.of(villager));
-//        if (villager.hasCustomName()) {
-//            stack.set(DataComponents.CUSTOM_NAME, villager.getCustomName());
-//        }
-//    }
-//
-//    public static EasyVillagerEntity getCacheVillager(ItemStack stack, Level level) {
-//        return getOrCreate(stack).getCacheVillager(level);
-//    }
-//
-//    public static void convertInventory(CompoundTag tag, NonNullList<ItemStack> stacks, HolderLookup.Provider provider) {
-//        ListTag listtag = tag.getList("Items", Tag.TAG_COMPOUND);
-//
-//        for (int i = 0; i < listtag.size(); i++) {
-//            CompoundTag itemTag = listtag.getCompound(i);
-//            int pos = itemTag.getByte("Slot") & 255;
-//            if (pos < stacks.size()) {
-//                ItemStack convert = convert(provider, itemTag);
-//                stacks.set(pos, convert);
-//            }
-//        }
-//    }
-
-//    public static ItemStack convert(HolderLookup.Provider provider, CompoundTag itemCompound) {
-//        ItemStack stack = ItemStack.parseOptional(provider, itemCompound);
-//        if (stack.isEmpty()) {
-//            return stack;
-//        }
-//        if (!(stack.getItem() instanceof VillagerItem)) {
-//            return stack;
-//        }
-//        if (stack.has(ModItems.VILLAGER_DATA_COMPONENT)) {
-//            return stack;
-//        }
-//        if (!itemCompound.contains("tag", Tag.TAG_COMPOUND)) {
-//            return stack;
-//        }
-//        CompoundTag tag = itemCompound.getCompound("tag");
-//        if (!tag.contains("villager", Tag.TAG_COMPOUND)) {
-//            return stack;
-//        }
-//        CompoundTag villagerTag = tag.getCompound("villager");
-//        VillagerData villagerData = VillagerData.of(villagerTag);
-//        stack.set(ModItems.VILLAGER_DATA_COMPONENT, villagerData);
-//        return stack;
-//    }
 //
 //    public static void convert(ItemStack stack) {
 //        if (!(stack.getItem() instanceof VillagerItem)) {

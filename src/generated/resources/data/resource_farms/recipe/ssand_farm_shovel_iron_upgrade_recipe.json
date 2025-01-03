@@ -1,0 +1,21 @@
+{
+  "type": "resource_farms:upgrade_serializer",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "resource_farms:ssand_farm"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IFI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "resource_farms:ssand_farm"
+  }
+}

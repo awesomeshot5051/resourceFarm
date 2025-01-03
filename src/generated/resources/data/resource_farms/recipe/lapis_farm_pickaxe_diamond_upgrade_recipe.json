@@ -1,0 +1,21 @@
+{
+  "type": "resource_farms:upgrade_serializer",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "F": {
+      "item": "resource_farms:lapis_farm"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DFD",
+    " D "
+  ],
+  "result": {
+    "count": 1,
+    "id": "resource_farms:lapis_farm"
+  }
+}

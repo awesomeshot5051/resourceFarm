@@ -1,5 +1,6 @@
 package com.awesomeshot5051.resourceFarm.data.providers.recipe;
 
+import com.awesomeshot5051.resourceFarm.Main;
 import com.awesomeshot5051.resourceFarm.blocks.*;
 import com.awesomeshot5051.resourceFarm.data.providers.recipe.recipe.*;
 import com.awesomeshot5051.resourceFarm.items.*;
@@ -9,12 +10,60 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.common.conditions.*;
 
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.*;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
+    // List of blocks that require a pickaxe to mine
+    public static final List<Supplier<Block>> PICKAXE_BLOCKS = List.of(
+            ModBlocks.ANDESITE_FARM::get,
+            ModBlocks.COPPER_FARM::get,
+            ModBlocks.COAL_FARM::get,
+            ModBlocks.DCOPPER_FARM::get,
+            ModBlocks.DCOAL_FARM::get,
+            ModBlocks.IRON_FARM::get,
+            ModBlocks.GOLD_FARM::get,
+            ModBlocks.DIAMOND_FARM::get,
+            ModBlocks.EMERALD_FARM::get,
+            ModBlocks.LAPIS_FARM::get,
+            ModBlocks.REDSTONE_FARM::get,
+            ModBlocks.DIRON_FARM::get,
+            ModBlocks.DGOLD_FARM::get,
+            ModBlocks.DDIAMOND_FARM::get,
+            ModBlocks.DEMERALD_FARM::get,
+            ModBlocks.DLAPIS_FARM::get,
+            ModBlocks.DREDSTONE_FARM::get,
+            ModBlocks.NETHERITE_FARM::get,
+            ModBlocks.NETHER_QUARTZ_FARM::get,
+            ModBlocks.NETHER_GOLD_FARM::get,
+            ModBlocks.DEEPSLATE_FARM::get,
+            ModBlocks.BASALT_FARM::get,
+            ModBlocks.BLACKSTONE_FARM::get,
+            ModBlocks.CALCITE_FARM::get,
+            ModBlocks.COBBLESTONE_FARM::get,
+            ModBlocks.GRANITE_FARM::get,
+            ModBlocks.STONE_FARM::get,
+            ModBlocks.SSTONE_FARM::get,
+            ModBlocks.TUFF_FARM::get
+    );
+    public static final List<Supplier<Block>> SHOVEL_BLOCKS = List.of(
+            ModBlocks.CONCRETE_POWDER_FARM::get,
+            ModBlocks.DIRT_FARM::get,
+            ModBlocks.GRASS_FARM::get,
+            ModBlocks.GRAVEL_FARM::get,
+            ModBlocks.SAND_FARM::get,
+            ModBlocks.RSAND_FARM::get,  // Red Sand Farm
+            ModBlocks.SSAND_FARM::get, // Soul Sand Farm
+            ModBlocks.SSOIL_FARM::get, // Soul Soil Farm
+            ModBlocks.SNOW_FARM::get
+    );
+
+
     public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
@@ -419,7 +468,123 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('P', Ingredient.of(Items.WOODEN_PICKAXE, Items.STONE_PICKAXE, Items.IRON_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE))
                 .define('C', Items.GRANITE)
                 .unlockedBy("has_granite", has(Items.GRANITE)).save(recipeOutput, ResourceLocation.fromNamespaceAndPath("resource_farms", "granite_farm"));
+        PICKAXE_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" S ")
+                    .pattern("SFS")
+                    .pattern(" S ")
+                    .define('S', Ingredient.of(Items.COBBLESTONE, Items.COBBLED_DEEPSLATE))
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_stone", has(Items.COBBLESTONE))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_pickaxe_stone_upgrade_recipe"));
+        });
+        PICKAXE_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" I ")
+                    .pattern("IFI")
+                    .pattern(" I ")
+                    .define('I', Items.IRON_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_iron", has(Items.IRON_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_pickaxe_iron_upgrade_recipe"));
+        });
+        PICKAXE_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" G ")
+                    .pattern("GFG")
+                    .pattern(" G ")
+                    .define('G', Items.GOLD_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_gold", has(Items.GOLD_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_pickaxe_gold_upgrade_recipe"));
+        });
+        PICKAXE_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" D ")
+                    .pattern("DFD")
+                    .pattern(" D ")
+                    .define('D', Items.DIAMOND)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_diamond", has(Items.DIAMOND))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_pickaxe_diamond_upgrade_recipe"));
+        });
+        PICKAXE_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" N ")
+                    .pattern("NFN")
+                    .pattern(" N ")
+                    .define('N', Items.NETHERITE_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_netherite", has(Items.NETHERITE_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_pickaxe_netherite_upgrade_recipe"));
+        });
 
+// SHOVEL_BLOCKS
+        SHOVEL_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" S ")
+                    .pattern("SFS")
+                    .pattern(" S ")
+                    .define('S', Ingredient.of(Items.COBBLESTONE, Items.COBBLED_DEEPSLATE))
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_stone", has(Items.COBBLESTONE))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_shovel_stone_upgrade_recipe"));
+        });
+        SHOVEL_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" I ")
+                    .pattern("IFI")
+                    .pattern(" I ")
+                    .define('I', Items.IRON_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_iron", has(Items.IRON_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_shovel_iron_upgrade_recipe"));
+        });
+        SHOVEL_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" G ")
+                    .pattern("GFG")
+                    .pattern(" G ")
+                    .define('G', Items.GOLD_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_gold", has(Items.GOLD_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_shovel_gold_upgrade_recipe"));
+        });
+        SHOVEL_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" D ")
+                    .pattern("DFD")
+                    .pattern(" D ")
+                    .define('D', Items.DIAMOND)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_diamond", has(Items.DIAMOND))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_shovel_diamond_upgrade_recipe"));
+        });
+        SHOVEL_BLOCKS.forEach(farmBlockSupplier -> {
+            Block farmBlock = farmBlockSupplier.get();
+            UpgradeRecipeBuilder.shaped(RecipeCategory.MISC, farmBlock)
+                    .pattern(" N ")
+                    .pattern("NFN")
+                    .pattern(" N ")
+                    .define('N', Items.NETHERITE_INGOT)
+                    .define('F', farmBlock.asItem())
+                    .unlockedBy("has_netherite", has(Items.NETHERITE_INGOT))
+                    .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(Main.MODID, convertToRegistryName(farmBlock.getDescriptionId()) + "_shovel_netherite_upgrade_recipe"));
+        });
+
+    }
+
+    private String convertToRegistryName(String block) {
+        return block.toLowerCase().replace(' ', '_').replace("block.resource_farms.", "");
     }
 
 }

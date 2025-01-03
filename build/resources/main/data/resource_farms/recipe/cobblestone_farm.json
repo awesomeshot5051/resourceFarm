@@ -5,11 +5,9 @@
     "B": {
       "tag": "c:glass_panes"
     },
-    "C": [
-      {
-        "item": "minecraft:cobblestone"
-      }
-    ],
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
     "P": [
       {
         "item": "minecraft:wooden_pickaxe"

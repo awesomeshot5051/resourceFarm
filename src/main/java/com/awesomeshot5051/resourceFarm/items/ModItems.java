@@ -11,8 +11,14 @@ import net.neoforged.bus.api.*;
 import net.neoforged.neoforge.registries.*;
 
 public class ModItems {
-
     public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(Registries.MENU, Main.MODID);
+    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Main.MODID);
+    public static final DeferredItem<Item> XP_UPGRADE = ITEMS.register("xp_upgrade_card",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> SPEED_UPGRADE = ITEMS.register("speed_upgrade",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FORTUNE_UPGRADE = ITEMS.register("fortune_upgrade",
+            () -> new Item(new Item.Properties()));
     private static final DeferredRegister<Item> ITEM_REGISTER = DeferredRegister.create(BuiltInRegistries.ITEM, Main.MODID);
     //    public static final DeferredHolder<Item, Item> INCUBATOR = ITEM_REGISTER.register("incubator", () -> ModBlocks.INCUBATOR.get().toItem());
     public static final DeferredHolder<Item, Item> INVENTORY_VIEWER = ITEM_REGISTER.register("inventory_viewer", () -> ModBlocks.INVENTORY_VIEWER.get().toItem());
@@ -28,15 +34,11 @@ public class ModItems {
     public static final DeferredHolder<Item, Item> EMERALD_FARM = ITEM_REGISTER.register("emerald_farm", () -> ModBlocks.EMERALD_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> LAPIS_FARM = ITEM_REGISTER.register("lapis_farm", () -> ModBlocks.LAPIS_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> REDSTONE_FARM = ITEM_REGISTER.register("redstone_farm", () -> ModBlocks.REDSTONE_FARM.get().toItem());
-
     public static final DeferredHolder<Item, Item> GRANITE_FARM = ITEM_REGISTER.register("granite_farm", () -> ModBlocks.GRANITE_FARM.get().toItem());
-
     public static final DeferredHolder<Item, Item> SAND_FARM = ITEM_REGISTER.register("sand_farm", () -> ModBlocks.SAND_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> CONCRETE_POWDER_FARM = ITEM_REGISTER.register("cpowder_farm", () -> ModBlocks.CONCRETE_POWDER_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> CONCRETE_FARM = ITEM_REGISTER.register("concrete_farm", () -> ModBlocks.CONCRETE_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> COBBLESTONE_FARM = ITEM_REGISTER.register("cobblestone_farm", () -> ModBlocks.COBBLESTONE_FARM.get().toItem());
-
-
     // Deepslate variants
     public static final DeferredHolder<Item, Item> DIRON_FARM = ITEM_REGISTER.register("diron_farm", () -> ModBlocks.DIRON_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> DGOLD_FARM = ITEM_REGISTER.register("dgold_farm", () -> ModBlocks.DGOLD_FARM.get().toItem());
@@ -44,8 +46,6 @@ public class ModItems {
     public static final DeferredHolder<Item, Item> DEMERALD_FARM = ITEM_REGISTER.register("demerald_farm", () -> ModBlocks.DEMERALD_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> DLAPIS_FARM = ITEM_REGISTER.register("dlapis_farm", () -> ModBlocks.DLAPIS_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> DREDSTONE_FARM = ITEM_REGISTER.register("dredstone_farm", () -> ModBlocks.DREDSTONE_FARM.get().toItem());
-
-
     // Nether variants
     public static final DeferredHolder<Item, Item> NETHER_QUARTZ_FARM = ITEM_REGISTER.register("nether_quartz_farm", () -> ModBlocks.NETHER_QUARTZ_FARM.get().toItem());
     public static final DeferredHolder<Item, Item> NETHER_GOLD_FARM = ITEM_REGISTER.register("nether_gold_farm", () -> ModBlocks.NETHER_GOLD_FARM.get().toItem());
@@ -82,6 +82,7 @@ public class ModItems {
         ITEM_REGISTER.register(eventBus);
         DATA_COMPONENT_TYPE_REGISTER.register(eventBus);
         REGISTRY.register(eventBus);
+        ITEMS.register(eventBus);
     }
 
 }

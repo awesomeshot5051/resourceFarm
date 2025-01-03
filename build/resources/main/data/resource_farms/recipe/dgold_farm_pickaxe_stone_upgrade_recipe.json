@@ -1,0 +1,26 @@
+{
+  "type": "resource_farms:upgrade_serializer",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "resource_farms:dgold_farm"
+    },
+    "S": [
+      {
+        "item": "minecraft:cobblestone"
+      },
+      {
+        "item": "minecraft:cobbled_deepslate"
+      }
+    ]
+  },
+  "pattern": [
+    " S ",
+    "SFS",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "resource_farms:dgold_farm"
+  }
+}
