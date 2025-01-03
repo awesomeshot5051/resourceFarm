@@ -356,33 +356,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.Build resourceFarm.executor": "Run",
-    "Gradle.resourceFarm [buildNeeded].executor": "Run",
-    "Gradle.resourceFarm [classes].executor": "Run",
-    "Gradle.resourceFarm [clean].executor": "Run",
-    "Gradle.resourceFarm [jar].executor": "Run",
-    "Gradle.resourceFarm [runClient].executor": "Debug",
-    "Gradle.resourceFarm [runData].executor": "Run",
-    "Gradle.resourceFarm [testClasses].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "code.cleanup.on.save": "true",
-    "git-widget-placeholder": "1.21.1-AddingUpgradeSlot",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Traee/Downloads/easy-villagers-1.21.1",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "rearrange.code.on.save": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.sourceCode.Java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.Build resourceFarm.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [buildNeeded].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [classes].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [jar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [runClient].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.resourceFarm [runData].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resourceFarm [testClasses].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1.21.1-AddingUpgradeSlot&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Traee/Downloads/easy-villagers-1.21.1&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\MCreatorWorkspaces\resourceFarm\src\main\resources\assets\resource_farms\textures\item" />
